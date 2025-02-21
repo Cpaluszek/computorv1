@@ -43,23 +43,38 @@ Discriminant is strictly negative, the two complex solutions are:
 ### Degree 2 - quadratic equation
 A quadratic equation follows this form:
 
-$x+y$
-a
-$$
-
 $ax2+bx+c=0$
 
 where:
-- a,b,ca,b,c are coefficients.
-- xx is the unknown variable.
+- $a$, $b$, $c$ are coefficients.
+- $x$ is the unknown variable.
+
+To find the solutions, we compute the discriminant:
+$\Delta = b^2 - 4ac$
 
 ![Discriminant signs](https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Quadratic_eq_discriminant.svg/330px-Quadratic_eq_discriminant.svg.png)
 
+- If $\Delta > 0$: Two distinct real solutions exist, given by:
+    - $X_1 = \frac{-b+\sqrt{\Delta}}{2a}$
+    - $X_2 = \frac{-b-\sqrt{\Delta}}{2a}$
+- If $\Delta = 0$: One real solution (a double root) exists:
+    - $X = \frac{-b}{2a}$
+- If $\Delta < 0$: Two complex conjugate solutions exist:
+    - $X_1 = \frac{-b}{2a}+i\frac{\sqrt{-\Delta}}{2a}$
+    - $X_1 = \frac{-b}{2a}-i\frac{\sqrt{-\Delta}}{2a}$
+
+
+
 ### Degree 1 - linear equation
-The program solves for the single root.
+A linear equation follows this form:
+
+$bX=c=0$
+
+Solving for $X$:
+
+$X=-\frac{c}{b}$
 
 ### Degree 0 - constant equation
 The program checks if the constant term is zero.
 - If it is 0, any real number is a solution
 - If it is non-zero, there is no solution
-
