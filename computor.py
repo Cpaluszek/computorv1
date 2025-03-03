@@ -4,6 +4,52 @@ import sys
 import re
 import math
 import cmath
+import matplotlib.pyplot as plt
+
+def plot_equation(coefficients):
+    """Plots the quadratic equation based on its coefficients."""
+    degree = max(k for k, v in coefficients.items() if v != 0)
+
+    if degree > 2:
+        print("The polynomial degree is strictly greater than 2, cannot plot.")
+        return
+
+    # Get coefficients
+    a = coefficients.get(2, 0)
+    b = coefficients.get(1, 0)
+    c = coefficients.get(0, 0)
+
+    # Define x range
+    x = np.linspace(-10, 10, 400)   # Generate 400 points from -10 to 10
+
+    # compute the y values
+    y = a*x**2 + b*x + c
+
+    # Plot the function
+    plt.figure(figsize(8, 6))
+    plt.axhline(0, color='black', linewidth=1)
+    plt.axvline(0, color='black', linewidth=1)
+    plt.grid(True, linestyle='--', alpha=0.7)
+
+    plt.plot(x, y, label=f"{a}x2 + {b}x + {c}", color="blue")
+
+    # Mark roots if they exist
+    if a != 0:
+        delta = b**2 - 4*a*c
+        if delta >= 0:
+            root1 = (-b - np.sqrt(delta)) / (2 * a)
+            root2 = (-b + np.sqrt(delta)) / (2 * a)
+            plt.scatter([root1, root2], [0, 0], color="red", zorder=3, label="Roots")
+
+    elif b != 0:
+        root = -c / b
+        plt.scatter([root], [0], color="red", zorder=3, label="Root")
+
+    plt.title("Quadratic Equation Plot")
+    plt.xlabel("x")
+    plt.ylabel("f(x)")
+    plt.legend()
+    plt.show()
 
 def parse_equation(equation: str):
     """Parses the input equation and returns a dictionnary of coefficients"""
@@ -98,8 +144,8 @@ def solve_quadratic(a, b, c):
         root1 = (-b + cmath.sqrt(delta)) / (2 * a)
         root2 = (-b - cmath.sqrt(delta)) / (2 * a)
         print(f"Discriminant is strictly negative: {delta} , the two complex solutions are:")
-        print(root1)
-        print(root2)
+        print(f"{root1.real:.1f} + {root1.imag:.1f}i")
+        print(f"{root2.real:.1f} - {abs(root2.imag):.1f}i")
 
 def solve_linear(b, c):
     """Solves a linear equation bx + c = 0"""
@@ -127,5 +173,7 @@ if __name__ == "__main__":
     equation = sys.argv[1]
     print(f"Equation: {equation}")
     coefficients = parse_equation(equation)
+    print(coefficients)
     solve(coefficients)
+    plot_equation(coefficients)
 
