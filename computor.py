@@ -4,7 +4,9 @@ import sys
 import re
 import math
 import cmath
+import argparse
 import matplotlib.pyplot as plt
+import numpy as np
 
 def plot_equation(coefficients):
     """Plots the quadratic equation based on its coefficients."""
@@ -20,13 +22,13 @@ def plot_equation(coefficients):
     c = coefficients.get(0, 0)
 
     # Define x range
-    x = np.linspace(-10, 10, 400)   # Generate 400 points from -10 to 10
+    x = np.linspace(-5, 5, 400)   # Generate 400 points from -10 to 10
 
     # compute the y values
     y = a*x**2 + b*x + c
 
     # Plot the function
-    plt.figure(figsize(8, 6))
+    plt.figure(figsize=(8, 6))
     plt.axhline(0, color='black', linewidth=1)
     plt.axvline(0, color='black', linewidth=1)
     plt.grid(True, linestyle='--', alpha=0.7)
@@ -166,14 +168,17 @@ def solve_constant(c):
         print("No solution.")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} \"equation\"")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(prog="computor.py", description="Solve and optionnaly plot an equation.")
+    parser.add_argument("equation", type=str, help="The equation to solve, e.g., 1 * X^0 + 2 * X^1 + 5 * X^2 = 0")
+    parser.add_argument("-p", "--plot", action="store_true", help="Plot the graph of the equation")
 
-    equation = sys.argv[1]
-    print(f"Equation: {equation}")
-    coefficients = parse_equation(equation)
+    args = parser.parse_args()
+
+    print(f"Equation: {args.equation}")
+    coefficients = parse_equation(args.equation)
     print(coefficients)
     solve(coefficients)
-    plot_equation(coefficients)
+
+    if args.plot:
+        plot_equation(coefficients)
 
