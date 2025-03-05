@@ -10,7 +10,7 @@ import numpy as np
 
 def plot_equation(coefficients):
     """Plots the quadratic equation based on its coefficients."""
-    degree = max(k for k, v in coefficients.items() if v != 0)
+    degree = max((k for k, v in coefficients.items() if v != 0), default=0)
 
     if degree > 2:
         print("The polynomial degree is strictly greater than 2, cannot plot.")
@@ -54,7 +54,7 @@ def plot_equation(coefficients):
     plt.show()
 
 def parse_equation(equation: str):
-    """Parses the input equation and returns a dictionnary of coefficients"""
+    """Parses the input equation and returns a dictionary of coefficients"""
 
     if "=" not in equation:
         print("Error: Invalid equation format. The equation must contains '='.")
@@ -96,7 +96,7 @@ def parse_side(expression: str, coefficients: dict, sign: int):
 
 def solve(coefficients):
     """Solves the polynomial equation based on its degree."""
-    degree = max(k for k,v in coefficients.items() if v != 0)
+    degree = max((k for k,v in coefficients.items() if v != 0), default=0)
 
     # Format the reduced form of the equation
     terms = []
@@ -130,24 +130,30 @@ def solve(coefficients):
 def solve_quadratic(a, b, c):
     """Solves a quadratic equation ax^2 + bx + c = 0."""
 
+    print("\nDetailed Solution Steps:")
+    print(f"Equation: {a}x² + {b}x + {c} = 0")
+    print(f"Discriminant calculation: Δ = b² - 4ac")
+    print(f"Δ = ({b})² - 4 * {a} * {c}")
+    print(f"Δ = {b**2} - {4*a*c}")
     delta = b**2 - 4*a*c
+    print(f"Δ = {delta}")
 
     if delta > 0:
         root1 = (-b - math.sqrt(delta)) / (2 * a)
         root2 = (-b + math.sqrt(delta)) / (2 * a)
         print(f"Discriminant is strictly positive: {delta}, the two solutions are:")
-        print(root1)
-        print(root2)
+        print(f"x1 = (-{b} - √Δ) / (2 * {a}) = {root1}")
+        print(f"x2 = (-{b} + √Δ) / (2 * {a}) = {root2}")
     elif delta == 0:
         root = -b / (2 * a)
         print("Discriminant is zero, the solution is:")
-        print(root)
+        print(f"x = -{b} / (2 * {a} = {root})")
     else:
         root1 = (-b + cmath.sqrt(delta)) / (2 * a)
         root2 = (-b - cmath.sqrt(delta)) / (2 * a)
         print(f"Discriminant is strictly negative: {delta} , the two complex solutions are:")
-        print(f"{root1.real:.1f} + {root1.imag:.1f}i")
-        print(f"{root2.real:.1f} - {abs(root2.imag):.1f}i")
+        print(f"x1 = (-{b} + √Δ) / (2 * {a}) = {root1.real:.1f} + {abs(root1.imag):.1f}i ")
+        print(f"x2 = (-{b} - √Δ) / (2 * {a}) = {root2.real:.1f} - {abs(root2.imag):.1f}i")
 
 def solve_linear(b, c):
     """Solves a linear equation bx + c = 0"""
@@ -158,7 +164,7 @@ def solve_linear(b, c):
             print("No solution.")
     else:
         print("The solution is:")
-        print(f"{-c / b}")
+        print(f"x = -{c} / {b} = {-c / b}")
 
 def solve_constant(c):
     """Handles a constant equation c = 0."""
@@ -168,15 +174,13 @@ def solve_constant(c):
         print("No solution.")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="computor.py", description="Solve and optionnaly plot an equation.")
-    parser.add_argument("equation", type=str, help="The equation to solve, e.g., 1 * X^0 + 2 * X^1 + 5 * X^2 = 0")
+    parser = argparse.ArgumentParser(prog="computor.py", description="Solve and optionally plot an equation.")
+    parser.add_argument("equation", type=str, metavar="EQUATION", help="The equation to solve, e.g., 1 * X^0 + 2 * X^1 + 5 * X^2 = 0")
     parser.add_argument("-p", "--plot", action="store_true", help="Plot the graph of the equation")
 
     args = parser.parse_args()
 
-    print(f"Equation: {args.equation}")
     coefficients = parse_equation(args.equation)
-    print(coefficients)
     solve(coefficients)
 
     if args.plot:
