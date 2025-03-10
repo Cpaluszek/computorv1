@@ -113,6 +113,8 @@ def solve(coefficients):
             terms.append(f"{sign} {coef:.3f} * X^{k}".rstrip("0").rstrip("."))
 
     reduced_form = " ".join(terms).replace("+ -", "- ")
+    if len(reduced_form) == 0:
+        reduced_form = "0"
     print("Reduced form:", reduced_form, "= 0")
 
     print(f"Polynomial degree: {degree}")
@@ -132,7 +134,7 @@ def solve_quadratic(a, b, c):
 
     print("\nDetailed Solution Steps:")
     print(f"Equation: {a}x² + {b}x + {c} = 0")
-    print(f"Discriminant calculation: Δ = b² - 4ac")
+    print(f"Δ = b² - 4ac")
     print(f"Δ = ({b})² - 4 * {a} * {c}")
     print(f"Δ = {b**2} - {4*a*c}")
     delta = b**2 - 4*a*c
@@ -147,7 +149,7 @@ def solve_quadratic(a, b, c):
     elif delta == 0:
         root = -b / (2 * a)
         print("Discriminant is zero, the solution is:")
-        print(f"x = -{b} / (2 * {a} = {root})")
+        print(f"x = -{b} / (2 * {a}) = {root}")
     else:
         root1 = (-b + cmath.sqrt(delta)) / (2 * a)
         root2 = (-b - cmath.sqrt(delta)) / (2 * a)
