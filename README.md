@@ -78,3 +78,8 @@ $X=-\frac{c}{b}$
 The program checks if the constant term is zero.
 - If it is 0, any real number is a solution
 - If it is non-zero, there is no solution
+
+---
+## Resources
+- [Visualizing Complex Roots of Quadratic Equations](https://www.geogebra.org/m/U2HRUfDr)
+
