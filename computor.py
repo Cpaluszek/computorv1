@@ -2,11 +2,12 @@
 
 import sys
 import re
-import math
-import cmath
 import argparse
 import matplotlib.pyplot as plt
 import numpy as np
+
+def sqrt(x):
+    return x ** 0.5
 
 def plot_equation(coefficients):
     """Plots the quadratic equation based on its coefficients."""
@@ -39,8 +40,8 @@ def plot_equation(coefficients):
     if a != 0:
         delta = b**2 - 4*a*c
         if delta >= 0:
-            root1 = (-b - np.sqrt(delta)) / (2 * a)
-            root2 = (-b + np.sqrt(delta)) / (2 * a)
+            root1 = (-b - sqrt(delta)) / (2 * a)
+            root2 = (-b + sqrt(delta)) / (2 * a)
             plt.scatter([root1, root2], [0, 0], color="red", zorder=3, label="Roots")
 
     elif b != 0:
@@ -57,7 +58,7 @@ def parse_equation(equation: str):
     """Parses the input equation and returns a dictionary of coefficients"""
 
     if "=" not in equation:
-        print("Error: Invalid equation format. The equation must contains '='.")
+        print("Error: Equation must contain '=' separating left-hand and right-hand sides.")
         sys.exit(1)
 
     # Normalize equation: remove spaces and split by =
@@ -65,7 +66,7 @@ def parse_equation(equation: str):
 
     # Check for invalid characters
     if not re.match(r'^[-+0-9X\^*.]*$', lhs) or not re.match(r'^[-+0-9X\^*.]*$', rhs):
-        print("Error: Equation contains invalid characters.")
+        print("Error: Equation contains invalid characters. Use only numbers, X variables, and operators.")
         sys.exit(1)
 
     # Convert to coefficient dictionnary
@@ -87,6 +88,7 @@ def parse_side(expression: str, coefficients: dict, sign: int):
             sys.exit(1)
 
         power = int(power)
+        # Parse the coefficient to float
         coef = float(coef) if coef not in ["", "+", "-"] else (1.0 if coef == "+" else -1.0)
 
         if power in coefficients:
@@ -141,8 +143,8 @@ def solve_quadratic(a, b, c):
     print(f"Δ = {delta}")
 
     if delta > 0:
-        root1 = (-b - math.sqrt(delta)) / (2 * a)
-        root2 = (-b + math.sqrt(delta)) / (2 * a)
+        root1 = (-b - sqrt(delta)) / (2 * a)
+        root2 = (-b + sqrt(delta)) / (2 * a)
         print(f"Discriminant is strictly positive: {delta}, the two solutions are:")
         print(f"x1 = (-{b} - √Δ) / (2 * {a}) = {root1}")
         print(f"x2 = (-{b} + √Δ) / (2 * {a}) = {root2}")
@@ -151,11 +153,11 @@ def solve_quadratic(a, b, c):
         print("Discriminant is zero, the solution is:")
         print(f"x = -{b} / (2 * {a}) = {root}")
     else:
-        root1 = (-b + cmath.sqrt(delta)) / (2 * a)
-        root2 = (-b - cmath.sqrt(delta)) / (2 * a)
-        print(f"Discriminant is strictly negative: {delta} , the two complex solutions are:")
-        print(f"x1 = (-{b} + √Δ) / (2 * {a}) = {root1.real:.1f} + {abs(root1.imag):.1f}i ")
-        print(f"x2 = (-{b} - √Δ) / (2 * {a}) = {root2.real:.1f} - {abs(root2.imag):.1f}i")
+        rootReal = -b / (2 * a)
+        rootIm = sqrt(-delta) / (2 * a)
+        print(f"Discriminant is strictly negative: {delta}, the two complex solutions are:")
+        print(f"x1 = (-{b} + √-Δ) / (2 * {a}) = {rootReal:.1f} + {rootIm:.1f}i ")
+        print(f"x2 = (-{b} - √-Δ) / (2 * {a}) = {rootReal:.1f} - {rootIm:.1f}i ")
 
 def solve_linear(b, c):
     """Solves a linear equation bx + c = 0"""
